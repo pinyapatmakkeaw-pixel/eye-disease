@@ -21,193 +21,25 @@
             --secondary: #4facfe;
             --accent: #00ff87;
             --text: #f8fafc;
-            --text-muted: #64748b;
             --border: rgba(255, 255, 255, 0.08);
         }
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Kanit', sans-serif;
-        }
-
-        body {
-            background-color: var(--bg-color);
-            color: var(--text);
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 20px;
-        }
-
-        .container {
-            width: 100%;
-            max-width: 480px;
-            background: var(--card-bg);
-            border-radius: 28px;
-            padding: 30px;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-            border: 1px solid var(--border);
-            text-align: center;
-            margin-top: 20px;
-        }
-
-        header h1 {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 2.3rem;
-            background: linear-gradient(45deg, var(--primary), var(--secondary));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin-bottom: 6px;
-            letter-spacing: 1px;
-        }
-
-        header p {
-            color: #94a3b8;
-            font-size: 0.9rem;
-            margin-bottom: 25px;
-            font-weight: 300;
-        }
-
-        .camera-box {
-            position: relative;
-            width: 100%;
-            aspect-ratio: 4/3;
-            background: #020617;
-            border-radius: 20px;
-            overflow: hidden;
-            border: 1px solid var(--border);
-            margin-bottom: 25px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        #webcam-container video {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .scanner-overlay {
-            position: absolute;
-            width: 180px;
-            height: 180px;
-            border: 2px dashed var(--primary);
-            border-radius: 50%;
-            box-shadow: 0 0 0 9999px rgba(2, 6, 23, 0.65);
-            pointer-events: none;
-            display: none;
-            z-index: 10;
-        }
-
-        .scanner-overlay::after {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 2px;
-            background: var(--primary);
-            box-shadow: 0 0 12px var(--primary);
-            animation: scan 2.5s linear infinite;
-        }
-
-        @keyframes scan {
-            0% { top: 0%; }
-            50% { top: 100%; }
-            100% { top: 0%; }
-        }
-
-        .btn {
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            color: #020617;
-            border: none;
-            padding: 15px 30px;
-            font-size: 1.05rem;
-            font-weight: 600;
-            border-radius: 14px;
-            cursor: pointer;
-            width: 100%;
-            transition: all 0.2s ease;
-            box-shadow: 0 4px 20px rgba(0, 242, 254, 0.25);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .btn:hover {
-            transform: translateY(-1px);
-            box-shadow: 0 6px 25px rgba(0, 242, 254, 0.4);
-        }
-
-        .btn:disabled {
-            background: #1e293b;
-            color: #475569;
-            box-shadow: none;
-            cursor: not-allowed;
-        }
-
-        .result-box {
-            margin-top: 25px;
-            padding: 22px;
-            background: rgba(0, 0, 0, 0.15);
-            border-radius: 20px;
-            border: 1px solid var(--border);
-            display: none;
-        }
-
-        .result-title {
-            font-size: 1.15rem;
-            font-weight: 500;
-            margin-bottom: 20px;
-            color: #e2e8f0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-        }
-
-        .prediction-bar {
-            margin-bottom: 16px;
-            text-align: left;
-        }
-
-        .label-text {
-            display: flex;
-            justify-content: space-between;
-            font-size: 0.95rem;
-            margin-bottom: 6px;
-            font-weight: 400;
-        }
-
-        .progress-track {
-            width: 100%;
-            height: 14px;
-            background: #0f172a;
-            border-radius: 7px;
-            overflow: hidden;
-        }
-
-        .progress-fill {
-            height: 100%;
-            width: 0%;
-            background: linear-gradient(90deg, var(--secondary), var(--accent));
-            border-radius: 7px;
-            transition: width 0.3s ease;
-        }
-
-        .status-badge {
-            display: inline-block;
-            padding: 6px 16px;
-            border-radius: 30px;
-            font-size: 0.85rem;
-            font-weight: 500;
-            background: rgba(0, 242, 254, 0.08);
-            color: var(--primary);
-            margin-bottom: 20px;
-            border: 1px solid rgba(0, 242, 254, 0.15);
-        }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Kanit', sans-serif; }
+        body { background-color: var(--bg-color); color: var(--text); min-height: 100vh; display: flex; flex-direction: column; align-items: center; padding: 20px; }
+        .container { width: 100%; max-width: 480px; background: var(--card-bg); border-radius: 28px; padding: 30px; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5); border: 1px solid var(--border); text-align: center; margin-top: 20px; }
+        header h1 { font-family: 'Orbitron', sans-serif; font-size: 2.3rem; background: linear-gradient(45deg, var(--primary), var(--secondary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 6px; }
+        header p { color: #94a3b8; font-size: 0.9rem; margin-bottom: 25px; }
+        .camera-box { position: relative; width: 100%; aspect-ratio: 4/3; background: #020617; border-radius: 20px; overflow: hidden; border: 1px solid var(--border); margin-bottom: 25px; display: flex; justify-content: center; align-items: center; }
+        #webcam-container video { width: 100%; height: 100%; object-fit: cover; }
+        .scanner-overlay { position: absolute; width: 180px; height: 180px; border: 2px dashed var(--primary); border-radius: 50%; box-shadow: 0 0 0 9999px rgba(2, 6, 23, 0.65); display: none; z-index: 10; }
+        .btn { background: linear-gradient(135deg, var(--primary), var(--secondary)); color: #020617; border: none; padding: 15px 30px; font-size: 1.05rem; font-weight: 600; border-radius: 14px; cursor: pointer; width: 100%; transition: all 0.2s ease; display: flex; justify-content: center; align-items: center; gap: 10px; }
+        .btn:disabled { background: #1e293b; color: #475569; cursor: not-allowed; }
+        .result-box { margin-top: 25px; padding: 22px; background: rgba(0, 0, 0, 0.15); border-radius: 20px; border: 1px solid var(--border); display: none; }
+        .prediction-bar { margin-bottom: 16px; text-align: left; }
+        .label-text { display: flex; justify-content: space-between; font-size: 0.95rem; margin-bottom: 6px; }
+        .progress-track { width: 100%; height: 14px; background: #0f172a; border-radius: 7px; overflow: hidden; }
+        .progress-fill { height: 100%; width: 0%; background: linear-gradient(90deg, var(--secondary), var(--accent)); transition: width 0.3s ease; }
+        .status-badge { display: inline-block; padding: 6px 16px; border-radius: 30px; font-size: 0.85rem; background: rgba(0, 242, 254, 0.08); color: var(--primary); margin-bottom: 20px; }
     </style>
 </head>
 <body>
@@ -219,7 +51,7 @@
         </header>
 
         <div id="status-badge" class="status-badge">
-            <i class="fa-solid fa-spinner fa-spin"></i> กำลังโหลดสมอง AI อัตโนมัติ...
+            <i class="fa-solid fa-spinner fa-spin"></i> กำลังโหลดสมอง AI จากในคลังข้อมูล...
         </div>
 
         <div class="camera-box">
@@ -235,64 +67,53 @@
         </button>
 
         <div id="result-box" class="result-box">
-            <div class="result-title"><i class="fa-solid fa-chart-simple" style="color:var(--primary)"></i> ผลวิเคราะห์ความน่าจะเป็น</div>
             <div id="label-container"></div>
         </div>
     </div>
 
     <script type="text/javascript">
-        // ดึงโมเดลต้อหิน/ต้อเนื้อของคุณแม่ผ่านระบบคลาวด์โดยตรง
-        const URL = "https://teachablemachine.withgoogle.com/models/7iXp1mQg9/";
+        // กำหนดให้ดึงไฟล์จากโฟลเดอร์เดียวกันใน GitHub Pages ตัวเองตรงๆ
+        const URL = "./"; 
 
         let model, webcam, labelContainer, maxClassIdentifiers;
         const statusBadge = document.getElementById("status-badge");
         const startBtn = document.getElementById("start-btn");
         const resultBox = document.getElementById("result-box");
-        const overlay = document.getElementById("scanner-overlay");
         const placeholder = document.getElementById("placeholder-icon");
 
         async function loadModel() {
             try {
-                const modelURL = URL + "model.json";
-                const metadataURL = URL + "metadata.json";
-                
-                model = await tmImage.load(modelURL, metadataURL);
+                // เรียกใช้ไฟล์โมเดลที่อยู่เคียงข้างตัวมันเอง
+                model = await tmImage.load(URL + "model.json", URL + "metadata.json");
                 maxClassIdentifiers = model.getTotalClasses();
                 
-                statusBadge.innerHTML = '<i class="fa-solid fa-circle-check"></i> ดึงข้อมูลโมเดลสำเร็จ เว็บพร้อมใช้งานแล้วค่ะ!';
+                statusBadge.innerHTML = '<i class="fa-solid fa-circle-check"></i> ระบบ AI พร้อมทำงานแล้วค่ะ!';
                 statusBadge.style.color = "var(--accent)";
                 statusBadge.style.background = "rgba(0, 255, 135, 0.08)";
-                statusBadge.style.borderColor = "rgba(0, 255, 135, 0.15)";
                 
                 startBtn.disabled = false;
             } catch (e) {
                 console.error(e);
-                statusBadge.innerText = "ไม่สามารถดาวน์โหลดไฟล์โมเดลจากระบบคลาวด์ได้";
+                statusBadge.innerText = "ไม่สามารถโหลดไฟล์โมเดลได้ ตรวจสอบชื่อไฟล์โมเดลว่าเป็นพิมพ์เล็กทั้งหมด";
                 statusBadge.style.color = "#ff4a4a";
             }
         }
 
         async function init() {
             startBtn.disabled = true;
-            startBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> กำลังเชื่อมต่อกล้องหลัง...';
-            
             try {
                 webcam = new tmImage.Webcam(400, 300, false);
-                await webcam.setup({ facingMode: "environment" }); // เรียกใช้กล้องหลังมือถือ
+                await webcam.setup({ facingMode: "environment" }); 
                 await webcam.play();
                 window.requestAnimationFrame(loop);
 
                 placeholder.style.display = "none";
-                overlay.style.display = "block";
                 document.getElementById("webcam-container").appendChild(webcam.canvas);
-                
-                startBtn.innerHTML = '<i class="fa-solid fa-eye fa-fade"></i> AI กำลังคัดกรองแบบ Real-time...';
                 resultBox.style.display = "block";
                 setupResultUI();
             } catch (err) {
-                alert("เปิดกล้องล้มเหลว! โปรดเปิดผ่านลิงก์ HTTPS และอนุญาตให้เว็บเข้าถึงกล้องด้วยนะคะ");
+                alert("เปิดกล้องล้มเหลว! โปรดอนุญาตให้เว็บเข้าถึงกล้องด้วยนะครับ");
                 startBtn.disabled = false;
-                startBtn.innerHTML = '<i class="fa-solid fa-video"></i> ลองเปิดกล้องอีกครั้ง';
             }
         }
 
@@ -309,8 +130,8 @@
                 const barHTML = `
                     <div class="prediction-bar">
                         <div class="label-text">
-                            <span id="class-name-${i}" style="font-weight:500;">-</span>
-                            <span id="class-pct-${i}" style="color:var(--primary); font-family:'Orbitron', sans-serif;">0%</span>
+                            <span id="class-name-${i}">-</span>
+                            <span id="class-pct-${i}">0%</span>
                         </div>
                         <div class="progress-track">
                             <div id="bar-fill-${i}" class="progress-fill"></div>
