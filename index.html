@@ -4,26 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>VisionAI - เครื่องตรวจคัดกรองโรคตาด้วย AI</title>
-    
     <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@latest/dist/tfjs.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@teachablemachine/image@latest/dist/teachablemachine-image.min.js"></script>
-    
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600&family=Orbitron:wght@700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
     <style>
-        :root {
-            --bg-color: #0b0f19;
-            --card-bg: #151f32;
-            --primary: #00f2fe;
-            --secondary: #4facfe;
-            --accent: #00ff87;
-            --text: #f8fafc;
-            --border: rgba(255, 255, 255, 0.08);
-        }
-
+        :root { --bg-color: #0b0f19; --card-bg: #151f32; --primary: #00f2fe; --secondary: #4facfe; --accent: #00ff87; --text: #f8fafc; --border: rgba(255, 255, 255, 0.08); }
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Kanit', sans-serif; }
         body { background-color: var(--bg-color); color: var(--text); min-height: 100vh; display: flex; flex-direction: column; align-items: center; padding: 20px; }
         .container { width: 100%; max-width: 480px; background: var(--card-bg); border-radius: 28px; padding: 30px; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5); border: 1px solid var(--border); text-align: center; margin-top: 20px; }
@@ -31,7 +19,6 @@
         header p { color: #94a3b8; font-size: 0.9rem; margin-bottom: 25px; }
         .camera-box { position: relative; width: 100%; aspect-ratio: 4/3; background: #020617; border-radius: 20px; overflow: hidden; border: 1px solid var(--border); margin-bottom: 25px; display: flex; justify-content: center; align-items: center; }
         #webcam-container video { width: 100%; height: 100%; object-fit: cover; }
-        .scanner-overlay { position: absolute; width: 180px; height: 180px; border: 2px dashed var(--primary); border-radius: 50%; box-shadow: 0 0 0 9999px rgba(2, 6, 23, 0.65); display: none; z-index: 10; }
         .btn { background: linear-gradient(135deg, var(--primary), var(--secondary)); color: #020617; border: none; padding: 15px 30px; font-size: 1.05rem; font-weight: 600; border-radius: 14px; cursor: pointer; width: 100%; transition: all 0.2s ease; display: flex; justify-content: center; align-items: center; gap: 10px; }
         .btn:disabled { background: #1e293b; color: #475569; cursor: not-allowed; }
         .result-box { margin-top: 25px; padding: 22px; background: rgba(0, 0, 0, 0.15); border-radius: 20px; border: 1px solid var(--border); display: none; }
@@ -43,102 +30,68 @@
     </style>
 </head>
 <body>
-
     <div class="container">
         <header>
             <h1>VisionAI</h1>
             <p>ระบบคัดกรองโรคตาเบื้องต้นด้วยปัญญาประดิษฐ์</p>
         </header>
-
-        <div id="status-badge" class="status-badge">
-            <i class="fa-solid fa-spinner fa-spin"></i> กำลังโหลดสมอง AI จากในคลังข้อมูล...
-        </div>
-
+        <div id="status-badge" class="status-badge">กำลังโหลดสมอง AI จากในคลังข้อมูล...</div>
         <div class="camera-box">
             <div id="webcam-container"></div>
-            <div id="scanner-overlay" class="scanner-overlay"></div>
-            <div id="placeholder-icon" style="color: #1e293b; font-size: 4.5rem;">
-                <i class="fa-solid fa-circle-user"></i>
-            </div>
+            <div id="placeholder-icon" style="color: #1e293b; font-size: 4.5rem;"><i class="fa-solid fa-circle-user"></i></div>
         </div>
-
-        <button id="start-btn" class="btn" onclick="init()" disabled>
-            <i class="fa-solid fa-video"></i> เปิดกล้องเริ่มสแกนดวงตา
-        </button>
-
-        <div id="result-box" class="result-box">
-            <div id="label-container"></div>
-        </div>
+        <button id="start-btn" class="btn" onclick="init()" disabled><i class="fa-solid fa-video"></i> เปิดกล้องเริ่มสแกนดวงตา</button>
+        <div id="result-box" class="result-box"><div id="label-container"></div></div>
     </div>
 
     <script type="text/javascript">
-        // กำหนดให้ดึงไฟล์จากโฟลเดอร์เดียวกันใน GitHub Pages ตัวเองตรงๆ
-        const URL = "./"; 
-
         let model, webcam, labelContainer, maxClassIdentifiers;
-        const statusBadge = document.getElementById("status-badge");
-        const startBtn = document.getElementById("start-btn");
-        const resultBox = document.getElementById("result-box");
-        const placeholder = document.getElementById("placeholder-icon");
 
         async function loadModel() {
+            const statusBadge = document.getElementById("status-badge");
             try {
-                // เรียกใช้ไฟล์โมเดลที่อยู่เคียงข้างตัวมันเอง
-                model = await tmImage.load(URL + "model.json", URL + "metadata.json");
+                // ปรับให้ระบุที่อยู่ของไฟล์โมเดลทั้ง 3 ไฟล์แยกกันอย่างชัดเจน ป้องกันระบบหา weights.bin ไม่เจอ
+                model = await tmImage.load("./model.json", "./metadata.json");
                 maxClassIdentifiers = model.getTotalClasses();
                 
                 statusBadge.innerHTML = '<i class="fa-solid fa-circle-check"></i> ระบบ AI พร้อมทำงานแล้วค่ะ!';
-                statusBadge.style.color = "var(--accent)";
+                statusBadge.style.color = "#00ff87";
                 statusBadge.style.background = "rgba(0, 255, 135, 0.08)";
-                
-                startBtn.disabled = false;
+                document.getElementById("start-btn").disabled = false;
             } catch (e) {
                 console.error(e);
-                statusBadge.innerText = "ไม่สามารถโหลดไฟล์โมเดลได้ ตรวจสอบชื่อไฟล์โมเดลว่าเป็นพิมพ์เล็กทั้งหมด";
+                statusBadge.innerText = "ไม่สามารถโหลดไฟล์โมเดลได้ โปรดตรวจสอบการบันทึกไฟล์อีกครั้ง";
                 statusBadge.style.color = "#ff4a4a";
             }
         }
 
         async function init() {
-            startBtn.disabled = true;
+            document.getElementById("start-btn").disabled = true;
             try {
                 webcam = new tmImage.Webcam(400, 300, false);
                 await webcam.setup({ facingMode: "environment" }); 
                 await webcam.play();
                 window.requestAnimationFrame(loop);
-
-                placeholder.style.display = "none";
-                document.getElementById("webcam-container").appendChild(webcam.canvas);
-                resultBox.style.display = "block";
+                document.getElementById("placeholder-icon").style.display = "none";
+                document.getElementById("result-box").style.display = "block";
                 setupResultUI();
             } catch (err) {
-                alert("เปิดกล้องล้มเหลว! โปรดอนุญาตให้เว็บเข้าถึงกล้องด้วยนะครับ");
-                startBtn.disabled = false;
+                alert("เปิดกล้องล้มเหลว! โปรดตรวจสอบสิทธิ์การเข้าถึงกล้อง");
+                document.getElementById("start-btn").disabled = false;
             }
         }
 
-        async function loop() {
-            webcam.update();
-            await predict();
-            window.requestAnimationFrame(loop);
-        }
+        async function loop() { webcam.update(); await predict(); window.requestAnimationFrame(loop); }
 
         function setupResultUI() {
             labelContainer = document.getElementById("label-container");
             labelContainer.innerHTML = "";
             for (let i = 0; i < maxClassIdentifiers; i++) {
-                const barHTML = `
+                labelContainer.insertAdjacentHTML('beforeend', `
                     <div class="prediction-bar">
-                        <div class="label-text">
-                            <span id="class-name-${i}">-</span>
-                            <span id="class-pct-${i}">0%</span>
-                        </div>
-                        <div class="progress-track">
-                            <div id="bar-fill-${i}" class="progress-fill"></div>
-                        </div>
-                    </div>
-                `;
-                labelContainer.insertAdjacentHTML('beforeend', barHTML);
+                        <div class="label-text"><span id="class-name-${i}">-</span><span id="class-pct-${i}">0%</span></div>
+                        <div class="progress-track"><div id="bar-fill-${i}" class="progress-fill"></div></div>
+                    </div>`);
             }
         }
 
@@ -146,13 +99,10 @@
             const prediction = await model.predict(webcam.canvas);
             for (let i = 0; i < maxClassIdentifiers; i++) {
                 let className = prediction[i].className;
-                
                 if(className === 'ต้อหิน') className = "⚠️ ความเสี่ยงโรคต้อหิน (Glaucoma)";
                 if(className === 'ต้อเนื้อ') className = "⚠️ ความเสี่ยงโรคต้อเนื้อ (Pterygium)";
                 if(className.toLowerCase() === 'normal' || className === 'ปกติ') className = "✅ ดวงตาปกติ (Normal)";
-
                 const probability = (prediction[i].probability * 100).toFixed(1);
-                
                 document.getElementById(`class-name-${i}`).innerText = className;
                 document.getElementById(`class-pct-${i}`).innerText = probability + "%";
                 document.getElementById(`bar-fill-${i}`).style.width = probability + "%";
